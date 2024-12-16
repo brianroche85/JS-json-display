@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style> 
+
+    bosy {
+        font-size: 16px; 
+    }
+
+        .container {
+            width: 1140px; 
+            margin: auto; 
+            padding: 48px 0px;             
+        } 
+
+        .text-center {
+            text-align: center; 
+        }
+
+        #card-container {
+            width: 1140px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            align-items: stretch;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            width: 28%;
+            height: 240px;
+        }
+
+        .card:hover {
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-title {
+            font-family: "Oswald", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+            font-size: 26px;
+        }
+
+        .card-content {
+            font-size: 16px;
+            color: #555;
+            font-weight: normal;
+            margin-top: 16px;
+            font-family: "Source Sans 3", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <p class="text-center">In this example, I am taking the json data from <a
+                href="https://jsonplaceholder.typicode.com/posts/">https://jsonplaceholder.typicode.com/posts/</a> and
+            displaying it in the cards below</p>
+    </div>
+    <div id="card-container"></div>
+
+
+    <script>
+        const jsonUrl = "https://jsonplaceholder.typicode.com/posts/";
+
+        const container = document.getElementById('card-container');
+
+        async function fetchAndDisplayCards() {
+            try {
+                // fetch json data 
+                const response = await fetch(jsonUrl);
+
+                if (!response.ok) {
+                    throw new Error('http error! status ${response.status}');
+                }
+
+                //parse the json 
+                const jsonData = await response.json();
+
+                // loop through the data 
+                jsonData.slice(0, 10).forEach(item => {
+                    const card = createCard(item);
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("failed to fetch test json");
+            }
+        }
+
+        // create card function: 
+        function createCard(data) {
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            const title = document.createElement('div');
+            title.className = 'card-title';
+            title.textContent = data.title || "No content available";
+
+            const content = document.createElement('div');
+            content.className = 'card-content';
+            content.textContent = data.body || "No content available";
+
+            card.appendChild(title);
+            card.appendChild(content);
+            return card;
+        };
+
+        fetchAndDisplayCards(); 
+    </script>
+</body>
+
+</html>
